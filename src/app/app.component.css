@@ -1,0 +1,66 @@
+
+.header {
+  min-width: 100vh;
+  height: 10vh;
+}
+
+footer.footer {
+  min-width: 100vh;
+  height: 10vh;
+}
+
+.bg-content {
+  width: auto;
+  height: auto;
+  background-image: url("../assets/supermarket.jpg");
+
+}
+
+.main-content {
+  min-width: 100vh;
+  min-height: 80vh;
+  padding: 10px;
+}
+
+.userlist {
+  border-radius: 4px;
+  background-color: white;
+  opacity: 0.9;
+}
+
+.userbagde {
+  cursor: pointer;
+  border-radius: 4px;
+  background-color: gray;
+  margin: 5px;
+}
+
+.selected {
+  background-color: lightblue;
+}
+
+.permission-manager {
+  min-width: 350px;
+  border-radius: 4px;
+  background-color: white;
+  opacity: 0.9;
+}
+
+.last-modif {
+  opacity: 0.9;
+}
+
+.check-box {
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+  margin-left: 5px;
+}
+
+.how-to-change-perm {
+  margin: 5px;
+  width: 300px;
+  text-align: center;
+}

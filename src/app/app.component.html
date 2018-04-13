@@ -1,20 +1,95 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
 
+  <nav class="header navbar navbar-light bg-light static-top">
+    <div class="container">
+      <h1>{{ title }}!</h1>
+      <img width="50" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
+    </div>
+  </nav>
+
+  <div class="bg-content">
+    <div class="main-content d-flex flex-row justify-content-between">
+      <div class="d-flex flex-column p-2 userlist">
+        <b>List of users :</b>
+        <div *ngFor="let user of users" class="p-2 userbagde"
+             [class.selected]="user === selectedUser"
+              (click)="onSelectedUser(user)">
+          <b>{{user.firstName}} {{user.lastName}} [{{user.permission}}]</b>
+        </div>
+      </div>
+      <div class="align-self-center permission-manager" *ngIf="selectedUser != null">
+        <div class="d-flex flex-column justify-content-center align-items-center">
+          <div class="p-2">
+            <b>{{selectedUser.firstName}} {{selectedUser.lastName}} [{{selectedUser.permission}}]</b>
+            <button class="btn btn-primary" type="button" (click)="onClickEdit()">Edit</button>
+          </div>
+          <div class="alert alert-info p-2 how-to-change-perm" role="alert">
+            select a duration with date picker or set permanent with the checkbox, to define how much time the permission change remains active.
+          </div>
+          <label class="p-2">
+            <input [owlDateTimeTrigger]="dt" [owlDateTime]="dt" [(ngModel)]="tmpDate" (ngModelChange)="onDateChange()" placeholder="click to open date picker">
+            <owl-date-time [pickerMode]="'dialog'" #dt></owl-date-time>
+          </label>
+          <label class="p-2">
+            <b>Make the permission change permanent</b>
+            <input type="checkbox" class="check-box" #CB (change)="checkDateValidity(CB.checked)"/>
+          </label>
+          <div class="alert alert-danger p-2" role="alert" *ngIf="!checkDateValidity(CB.checked)">
+            <b>No valid duration set.</b>
+          </div>
+          <div class="btn-group p-2" *ngIf="checkDateValidity(CB.checked)">
+            <button class="btn btn-secondary btn-lg dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Change Permission
+            </button>
+            <div class="dropdown-menu">
+              <a *ngIf="selectedUser.permission != manager" (click)="onSelectedPermission(manager, CB.checked)" class="dropdown-item">{{manager}}</a>
+              <a *ngIf="selectedUser.permission != storekeeper" (click)="onSelectedPermission(storekeeper, CB.checked)" class="dropdown-item">{{storekeeper}}</a>
+              <a *ngIf="selectedUser.permission != visitor" (click)="onSelectedPermission(visitor, CB.checked)" class="dropdown-item">{{visitor}}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="align-self-center d-flex flex-column align-items-center alert alert-info p-2 last-modif" *ngIf="selectedUser != null && selectedUser.lastModif != null">
+        <b style="text-decoration: underline">Last Permission change ({{selectedUser.lastModif.modifDateStr}})</b>
+        <span><b>{{selectedUser.firstName}} {{selectedUser.lastName}}</b> is now a <b>{{selectedUser.permission}}</b> (was <b>{{selectedUser.lastModif.previousPerm}}</b>) until: </span>
+        <b>{{displayExpirationDate()}}</b>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer bg-light">
+    <div class="container">
+      <h1>Made by Victor GSELL for Quantilia</h1>
+    </div>
+  </footer>
+
+<div id="editModal" *ngIf="selectedUser != null" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="Modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit {{selectedUser.firstName}} {{selectedUser.lastName}}'s name :</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onClickEditClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="">First and last name</span>
+          </div>
+          <input type="text" class="form-control" #FN (keyup)="checkNameValidity(FN.value, LN.value)">
+          <input type="text" class="form-control" #LN (keyup)="checkNameValidity(FN.value, LN.value)">
+        </div>
+        <div *ngIf="isValidEditInput" class="alert alert-success" role="alert">
+          Valid name, click the <b>"Save changes"</b> button will update {{selectedUser.firstName}} {{selectedUser.lastName}} to : {{FN.value}} {{LN.value}}
+        </div>
+        <div *ngIf="!isValidEditInput" class="alert alert-danger" role="alert">
+          <b>Incorrect naming: At least 3 characters, numbers & non-alphabetic characters are prohibed(except ' ' '.' '-')</b>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onClickEditClose()">Close</button>
+        <button *ngIf="isValidEditInput" type="button" class="btn btn-primary" (click)="onClickEditConfirm(FN.value, LN.value)">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
